@@ -1,0 +1,47 @@
+openapi: '3.1.0'
+info:
+  title: vault-api
+  description: Service Authentication key vault
+  version: 1.0.0
+servers:
+  - url: "/"    
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+
+  /key/{vendorName}:
+    get:
+      summary: Gets key for vendor
+      operationId: GetKeyByVendorName
+      parameters:
+        - name: vendorName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Key object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetKeyResponse'
+components:
+  schemas:
+    GetKeyResponse:
+      type: object
+      required:
+        - keyValue
+        - requestCount
+        - firstAddedDateTime
+      properties:
+        KeyValue:
+          type: string
+        requestCount:
+          type: integer
+          format: int32
+        firstAddedDateTime:
+          type: datetime
+    
