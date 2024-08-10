@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Vault.API.Exceptions
 {
+    [ExcludeFromCodeCoverage]
     public class ApiExceptionFilter : IExceptionFilter
     {
         public void OnException(ExceptionContext context)

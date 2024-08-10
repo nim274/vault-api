@@ -1,4 +1,5 @@
-﻿using Vault.API.Models;
+﻿using Vault.API.Exceptions;
+using Vault.API.Models;
 using Vault.API.Repositories;
 using Vault.API.Repositories.Entities;
 
@@ -16,7 +17,7 @@ namespace Vault.API.Services
         {
             var key = new ApiKey
             {
-                Value = request.Key,
+                KeyValue = request.Key,
                 VendorName = request.VendorName
             };
 
@@ -24,21 +25,26 @@ namespace Vault.API.Services
             
             return new CreateApiKeyResponse()
             {
-                Key = createdKey.Value,
+                Key = createdKey.KeyValue,
                 FirstAddedDate = createdKey.FirstAddedDate,
                 VendorName = createdKey.VendorName
             };
         }
 
-        public async Task<ApiKeyResponse> GetApiKey(string vendorName)
+        public async Task<GetApiKeyResponse> GetApiKey(string vendorName)
         {
             var apiKey = await _vaultRepository.GetApiKeyByVendorName(vendorName);
+
+            if (apiKey == null)
+                throw new ApiKeyNotFoundException(1, $"Api key not found for vendor:{vendorName}");
+
+            await _vaultRepository.CreateApiKeyRequest(apiKey.ApiKeyId);
 
             var count = await _vaultRepository.GetKeyRequestCount(apiKey.ApiKeyId);
 
             return new GetApiKeyResponse()
             {
-                Key = apiKey.Value,
+                Key = apiKey.KeyValue,
                 FirstAddedDate = apiKey.FirstAddedDate,
                 VendorName = apiKey.VendorName,
                 RequestCount = count
