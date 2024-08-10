@@ -15,6 +15,7 @@ namespace Vault.API.Controllers
         }
 
         [HttpGet("vendor/{vendorName}/key")]
+        [Authorize(Roles = "consumer")]
         public async Task<IActionResult> GetByVendorName(string vendorName)
         {
             var response = await _vaultService.GetApiKey(vendorName);
@@ -23,6 +24,7 @@ namespace Vault.API.Controllers
         }
 
         [HttpPut("key")]
+        [Authorize(Roles = "author")]
         public async Task<IActionResult> CreateKey(CreateApiKeyRequest request)
         {
             var response = await _vaultService.CreateApiKey(request);

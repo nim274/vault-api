@@ -6,10 +6,10 @@ namespace Vault.API.Models
     public class CreateApiKeyRequest
     {
         [Required]
-        [DisplayName("Api Key")]
+        [DisplayName("Key")]
         public string Key { get; set; }
         [Required]
-        [DisplayName("Vendor Name")]
+        [DisplayName("VendorName")]
         public string VendorName { get; set; }
     }
 }
