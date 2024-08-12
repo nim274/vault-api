@@ -15,7 +15,7 @@ public class UserRepository : IUserRepository
 
     private List<User> _users = new List<User>()
     {
-        new User() {Username = "consumer", Password = "123", Name = "public-api"},
-        new User() {Username = "author", Password = "123", Name = "author-api"},
+        new User() {Username = "consumer", Password = "123", Name = "public-api", Role = "consumer"},
+        new User() {Username = "author", Password = "123", Name = "author-api", Role = "author"},
     };
 }

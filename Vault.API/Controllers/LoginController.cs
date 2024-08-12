@@ -13,9 +13,9 @@ namespace Vault.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string userName, string password)
+        public async Task<IActionResult> Login(Login user)
         {
-           var token = await _userService.GetAuthenticationToken(userName, password);
+           var token = await _userService.GetAuthenticationToken(user.Username, user.Password);
 
             if (token == null)
                 return Unauthorized("User not found");

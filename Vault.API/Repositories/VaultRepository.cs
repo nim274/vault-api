@@ -31,11 +31,8 @@ namespace Vault.API.Infrastructure
 
         public async Task<ApiKey> CreateApiKey(ApiKey key)
         {
-            var existingKey = _keyTable.Where(x => x.VendorName.Equals(key.VendorName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-            if (existingKey != null)
-                throw new DuplicateApiKeyException(2, "Key for the vendor already exists");
-
-            key.ApiKeyId = _keyTable.Count + 1;
+            var newId = _keyTable.Count + 1;
+            key.ApiKeyId = newId;
             key.FirstAddedDate = DateTime.Now;
             _keyTable.Add(key);
 

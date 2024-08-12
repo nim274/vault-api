@@ -15,6 +15,10 @@ namespace Vault.API.Services
 
         public async Task<CreateApiKeyResponse> CreateApiKey(CreateApiKeyRequest request)
         {
+            var existingKey = await _vaultRepository.GetApiKeyByVendorName(request.VendorName);
+            if (existingKey != null)
+                throw new DuplicateApiKeyException(2, "Key for the vendor already exists");
+
             var key = new ApiKey
             {
                 KeyValue = request.Key,
