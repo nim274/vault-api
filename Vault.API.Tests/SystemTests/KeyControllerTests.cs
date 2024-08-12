@@ -30,7 +30,7 @@ namespace Vault.API.Tests.SystemTests
                 builder.ConfigureServices(services =>
                 {
                     var serviceDescriptor = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(IVaultRepository));
-                    services.Remove(serviceDescriptor);
+                    services.Remove(serviceDescriptor!);
                     services.AddSingleton<IVaultRepository>(_vaultRepository.Object);
                     
                 });

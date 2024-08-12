@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Vault.API.Authentication;
 using Vault.API.Exceptions;
 using Vault.API.Infrastructure;
 using Vault.API.Repositories;
