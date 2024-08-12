@@ -54,10 +54,6 @@ namespace Vault.API.Tests.SystemTests
             _vaultRepository.Setup(x => x.CreateApiKey(It.Is<ApiKey>(x=>x.KeyValue.Equals(key) && x.VendorName.Equals(vendorName))))
                 .ReturnsAsync(apiKey);
 
-            var token = await LoginAndGetToken("author", "123");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-
             // Act
             var response = await _client.PutAsync("/key", content);
 
@@ -82,9 +78,7 @@ namespace Vault.API.Tests.SystemTests
             _vaultRepository.Setup(x => x.GetApiKeyByVendorName(vendorName))
                 .ReturnsAsync(apiKey);
 
-            var token = await LoginAndGetToken("author", "123");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
+            
             // Act
             var response = await _client.PutAsync("/key", content);
 
@@ -109,9 +103,6 @@ namespace Vault.API.Tests.SystemTests
             _vaultRepository.Setup(x => x.CreateApiKey(It.Is<ApiKey>(x => x.KeyValue.Equals(key) && x.VendorName.Equals(vendorName))))
                 .ReturnsAsync(apiKey);
 
-            var token = await LoginAndGetToken("author", "123");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
             // Act
             var response = await _client.PutAsync("/key", content);
 
@@ -134,9 +125,7 @@ namespace Vault.API.Tests.SystemTests
 
             _vaultRepository.Setup(x => x.GetApiKeyByVendorName(vendorName)).ReturnsAsync(apiKey);
 
-            var token = await LoginAndGetToken("consumer", "123");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
+            
             // Act
             var response = await _client.GetAsync($"/vendor/{vendorName}/key");
 
@@ -156,9 +145,7 @@ namespace Vault.API.Tests.SystemTests
             _vaultRepository.Setup(x => x.GetApiKeyByVendorName(vendorName))
                 .ReturnsAsync(default(ApiKey));
 
-            var token = await LoginAndGetToken("consumer", "123");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
+            
             // Act
             var response = await _client.GetAsync($"/vendor/{vendorName}/key");
 
@@ -170,11 +157,5 @@ namespace Vault.API.Tests.SystemTests
             }
         }
 
-        private async Task<string> LoginAndGetToken(string username, string password)
-        {
-            var loginRequest = new StringContent(JsonSerializer.Serialize(new Login() { Username = username, Password = password }), Encoding.UTF8, "application/json");
-            var loginResponse = await _client.PostAsync("/login", loginRequest);
-            return await loginResponse.Content.ReadAsStringAsync();
-        }
     }
 }

@@ -20,21 +20,9 @@ builder.Services.AddOpenApiDocument();
 
 builder.Services.AddScoped<IVaultService, VaultService>();
 builder.Services.AddScoped<IVaultRepository, VaultRepository>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddControllers(options => options.Filters.Add<ApiExceptionFilter>());
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options=>
-    {
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-        };
-    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
