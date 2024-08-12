@@ -1,7 +1,6 @@
-﻿namespace Vault.API.Models
+﻿namespace Vault.API.Models;
+
+public class GetApiKeyResponse : ApiKeyResponse
 {
-    public class GetApiKeyResponse : ApiKeyResponse
-    {
-        public long RequestCount { get; set; }
-    }
+    public long RequestCount { get; set; }
 }

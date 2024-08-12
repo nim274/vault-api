@@ -1,6 +1,5 @@
-﻿namespace Vault.API.Models
+﻿namespace Vault.API.Models;
+
+public class CreateApiKeyResponse : ApiKeyResponse
 {
-    public class CreateApiKeyResponse : ApiKeyResponse
-    {
-    }
 }

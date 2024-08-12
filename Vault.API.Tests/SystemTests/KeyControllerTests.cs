@@ -1,17 +1,11 @@
 ﻿using FluentAssertions;
-using FluentAssertions.Common;
 using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using Vault.API.Authentication;
 using Vault.API.Models;
 using Vault.API.Repositories;
 using Vault.API.Repositories.Entities;

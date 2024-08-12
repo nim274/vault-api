@@ -22,4 +22,8 @@
     <InternalsVisibleTo Include="Vault.API.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+
 </Project>
