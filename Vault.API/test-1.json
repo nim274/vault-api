@@ -1,0 +1,43 @@
+{
+  "name" : "test-1",
+  "jobMode" : "VISUAL",
+  "description" : "",
+  "role" : "arn:aws:iam::590183873580:role/glue-role",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-590183873580-ap-southeast-2/scripts/test-1.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--extra-py-files" : "s3://aws-glue-studio-transforms-234881715811-prod-ap-southeast-2/recipe-transforms/aws-glue-python-recipe-transforms.zip",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-590183873580-ap-southeast-2/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-observability-metrics" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-590183873580-ap-southeast-2/temporary/",
+    "--extra-jars" : "s3://aws-glue-studio-transforms-234881715811-prod-ap-southeast-2/recipe-transforms/aws-glue-scala-recipe-transforms.jar"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 10,
+  "timeout" : 2880,
+  "maxCapacity" : 10.0,
+  "glueVersion" : "4.0",
+  "numberOfWorkers" : 10,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1728023968792\":{\"Recipe\":{\"Inputs\":[\"node-1728020715228\"],\"Name\":\"Data Preparation Recipe\",\"RecipeSteps\":[{\"Action\":{\"Operation\":\"SORT\",\"Parameters\":{\"expressions\":\"[{\\\"sourceColumn\\\":\\\"id\\\",\\\"ordering\\\":\\\"ASCENDING\\\",\\\"nullsOrdering\\\":\\\"NULLS_BOTTOM\\\",\\\"customOrder\\\":[]},{\\\"sourceColumn\\\":\\\"description\\\",\\\"ordering\\\":\\\"DESCENDING\\\",\\\"nullsOrdering\\\":\\\"NULLS_BOTTOM\\\",\\\"customOrder\\\":[]}]\"}}},{\"Action\":{\"Operation\":\"UPPER_CASE\",\"Parameters\":{\"sourceColumn\":\"description\"}}}]}},\"node-1728020214338\":{\"CatalogSource\":{\"Database\":\"db-test-1\",\"Name\":\"AWS Glue Data Catalog\",\"Table\":\"test-1nimesh_source\"}},\"node-1728020715228\":{\"SparkSQL\":{\"Inputs\":[\"node-1728020214338\"],\"Name\":\"SQL Query\",\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"id\",\"Type\":\"int\"},{\"Name\":\"description\",\"Type\":\"string\"},{\"Name\":\"Owner\",\"Type\":\"string\"}]}],\"SqlAliases\":[{\"Alias\":\"myDataSource\",\"From\":\"node-1728020214338\"}],\"SqlQuery\":\"select id, description, \\\"Nimesh\\\" as Owner from myDataSource\"}},\"node-1728020246145\":{\"S3DirectTarget\":{\"AutoDataQuality\":{\"IsEnabled\":false},\"Compression\":\"none\",\"Format\":\"csv\",\"Inputs\":[\"node-1728023968792\"],\"Name\":\"nimesh-destination\",\"PartitionKeys\":[],\"Path\":\"s3://nimesh-destination\",\"SchemaChangePolicy\":{\"EnableUpdateCatalog\":false}}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "vault-api",
+    "branch" : "Test-1",
+    "folder" : "Vault.API"
+  }
+}
