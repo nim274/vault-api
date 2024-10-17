@@ -1,0 +1,33 @@
+{
+  "name" : "chp-s3-job",
+  "jobMode" : "SCRIPT",
+  "description" : "",
+  "role" : "arn:aws:iam::590183873580:role/glue-role",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-590183873580-ap-southeast-2/scripts/chp-file-transformation.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--sparkconfiguration" : "standard",
+    "--enable-job-insights" : "true",
+    "--job-language" : "python"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 5,
+  "timeout" : 2880,
+  "maxCapacity" : 5.0,
+  "glueVersion" : "4.0",
+  "numberOfWorkers" : 5,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "vault-api",
+    "branch" : "Test-1",
+    "folder" : "vault.api"
+  }
+}
