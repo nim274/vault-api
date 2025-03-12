@@ -1,0 +1,64 @@
+package com.example;
+
+import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+
+import java.util.Map;
+import java.util.Properties;
+import com.amazonaws.services.kinesisanalytics.runtime.KinesisAnalyticsRuntime;
+
+public class KafkaAppenderApp {
+
+    public static void main(String[] args) throws Exception {
+        // 1. Set up the Flink execution environment
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 2. Get application properties dynamically from KinesisAnalyticsRuntime
+        Map<String, Properties> applicationProperties = KinesisAnalyticsRuntime.getApplicationProperties();
+
+        // 3. Extract Kafka properties from application properties
+        Properties kafkaProperties = applicationProperties.get("kafka"); // Assuming 'kafka' is the key you used
+
+        String bootstrapServers = kafkaProperties.getProperty("bootstrap.servers");
+        String sourceTopic = kafkaProperties.getProperty("source.topic");
+        String targetTopic = kafkaProperties.getProperty("target.topic");
+
+        if (bootstrapServers == null || sourceTopic == null || targetTopic == null) {
+            throw new IllegalArgumentException("Kafka bootstrap servers or topic names not set in application properties.");
+        }
+
+        // 4. Create Kafka Consumer for source topic
+        FlinkKafkaConsumer<String> consumer = new FlinkKafkaConsumer<>(
+                sourceTopic,  // source topic name dynamically retrieved from application properties
+                new SimpleStringSchema(),  // deserialization schema
+                kafkaProperties);
+
+        // 5. Create Kafka Producer for target topic
+        FlinkKafkaProducer<String> producer = new FlinkKafkaProducer<>(
+                targetTopic,  // target topic name dynamically retrieved from application properties
+                new SimpleStringSchema(),  // serialization schema
+                kafkaProperties);
+
+        // 6. Add source (Kafka Consumer)
+        DataStream<String> stream = env.addSource(consumer);
+
+        // 7. Process the stream: Add text to the incoming messages
+        DataStream<String> transformedStream = stream.map(new MapFunction<String, String>() {
+            @Override
+            public String map(String value) throws Exception {
+                // Append some text to the message
+                return value + " - processed by Flink";
+            }
+        });
+
+        // 8. Sink the processed stream to Kafka (target topic)
+        transformedStream.addSink(producer);
+
+        // 9. Execute the Flink job
+        env.execute("Flink Kafka Appender");
+    }
+}
